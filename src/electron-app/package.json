@@ -1,0 +1,23 @@
+{
+    "name": "cio-brain-desktop",
+    "version": "0.0.1",
+    "description": "A tool for CIOs to manage infrastructure",
+    "homepage": "./",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "build": "electron-builder"
+    },
+    "devDependencies": {
+        "electron": "^24.0.0",
+        "electron-builder": "^22.14.5"
+    },
+    "build": {
+        "extraResources": [
+            {
+                "from": "../ciobrain-master/build",
+                "to": "build"
+            }
+        ]
+    }
+}
