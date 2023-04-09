@@ -21,6 +21,7 @@
     "xlsx": "^0.17.2"
   },
   "devDependencies": {
+    "@types/react": "^18.0.33",
     "electron": "^24.0.0",
     "react-scripts": "4.0.3"
   },
