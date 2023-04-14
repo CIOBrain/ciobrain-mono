@@ -4,13 +4,8 @@ import "./Login.css"
 import "reactjs-popup/dist/index.css"
 import * as LOGIN from "../../common/Login.js"
 import axios from "axios"
-const URL =
-    process.env.NODE_ENV === "development"
-        ? "http://localhost:3002/auth"
-        : "https://ciobrainapi.azurewebsites.net/auth"
-const api = axios.create({ baseURL: URL })
 
-
+const api = axios.create({ baseURL: process.env.REACT_APP_API })
 
 const modalStyle = {
     maxWidth: "600px",

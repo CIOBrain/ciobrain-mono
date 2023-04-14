@@ -1,12 +1,13 @@
 import axios from "axios"
 import dotenv from 'dotenv';
 import { AssetCategoryEnum } from "../components/AssetCategoryEnum.js"
-import { URL } from "../URL";
 dotenv.config()
+
+console.log(process.env)
 
 // adding asset here for convenience
 // baseURL should be the base URL and routes should be part of routing
-const api = axios.create({ baseURL: `${URL}/asset` })
+const api = axios.create({ baseURL: `${process.env.REACT_APP_API}/asset` })
 
 const get = async url => {
     try {
