@@ -1,5 +1,3 @@
-// @ts-check
-
 import { Router } from "express"
 import assetControllers from "../controller/assetControllers.js"
 import { authenticate } from "./authenticate.js"
@@ -16,6 +14,8 @@ const getAssetController = (req, res, next) => {
     res.json({ error: "Invalid asset type" })
 }
 
+const deleteTest = (req, res) => req.assetController.delete(req, res)
+
 const findAll = (req, res) => req.assetController.findAll(req, res)
 
 const push = (req, res) => req.assetController.push(req, res)
@@ -27,31 +27,9 @@ const findChildrenById = (req, res) =>
 
 assetRouter.use("/:type", getAssetController)
 
-const asset = assetRouter.route("/:type");
-
-/**
- * @openapi
- * /asset/{type}:
- *   get:
- *     description: Returns all assets
- *     parameters:
- *      - in: path
- *        name: type
- *        schema:
- *          type: string
- *        required: true
- *        description: The type of asset to get
- *     responses:
- *       200:
- *         description: OK
- *         content:
- *           application/json:
- *             type: object
-*/
-asset.get(findAll);
-
-asset.post(/*authenticate, */push)
+assetRouter.route("/:type").get(findAll).post(push)
 assetRouter.get("/:type/:id", findById)
 assetRouter.get("/:type/:id/children", findChildrenById)
+assetRouter.delete("/:type/:id", deleteTest)
 
 export default assetRouter

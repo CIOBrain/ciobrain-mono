@@ -1,13 +1,12 @@
 import axios from "axios"
 import dotenv from 'dotenv';
 import { AssetCategoryEnum } from "../components/AssetCategoryEnum.js"
+import { URL } from "../URL";
 dotenv.config()
-
-console.log(process.env)
 
 // adding asset here for convenience
 // baseURL should be the base URL and routes should be part of routing
-const api = axios.create({ baseURL: `${process.env.REACT_APP_API}/asset` })
+const api = axios.create({ baseURL: `${URL}/asset` })
 
 const get = async url => {
     try {
@@ -25,6 +24,14 @@ const post = async (url, data) => {
     }
 }
 
+const deleteA = async (url, data) => {
+    try {
+        return (await api.delete(url, data)).data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const getAssetById = async (category, id) =>
     await get(`/${category}/${id}`)
 
@@ -36,6 +43,9 @@ export const getAllAssetsForCategory = async category =>
 
 export const pushAssets = async (category, assets) =>
     await post(`/${category}`, assets)
+
+export const deleteAsset = async(category,id) =>
+    await deleteA(`/${category}/${id}`)
 
 export const getAllAssets = async () =>
     (

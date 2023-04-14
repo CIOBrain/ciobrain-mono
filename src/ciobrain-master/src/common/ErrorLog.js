@@ -1,6 +1,9 @@
 import axios from "axios"
+import { URL } from "../URL"
 
-let errorLoggingURL = `${process.env.REACT_APP_API}/log`;
+let errorLoggingURL = `${process.env.NODE_ENV === "development"
+        ? URL
+        : "https://ciobrainapi.azurewebsites.net"}/log`;
 
 export async function log(error, details) {
     displayMessage(error)
