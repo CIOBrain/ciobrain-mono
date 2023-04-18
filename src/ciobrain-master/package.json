@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "type": "module",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
@@ -20,14 +21,21 @@
     "xlsx": "^0.17.2"
   },
   "devDependencies": {
-    "react-scripts": "^4.0.3"
+    "@types/react": "^18.0.33",
+    "electron": "^24.0.0",
+    "react-scripts": "4.0.3"
   },
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts build",
     "build-dev": "dotenv -e .env build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "app": "electron .",
+    "electron:start": "concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && npm run app\"",
+    "electron:package:mac": "npm run build && electron-builder -m -c.extraMetadata.main=build/main.js",
+    "electron:package:win": "npm run build && electron-builder -w -c.extraMetadata.main=build/main.js",
+    "electron:package:linux": "npm run build && electron-builder -l -c.extraMetadata.main=build/main.js"
   },
   "eslintConfig": {
     "extends": [
