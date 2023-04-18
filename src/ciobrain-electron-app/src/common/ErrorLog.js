@@ -1,6 +1,10 @@
 import axios from "axios"
 
-let errorLoggingURL = `${process.env.REACT_APP_API}/log`;
+const URL =
+    process.env.NODE_ENV === "development"
+        ? "http://localhost:3001/asset"
+        : "https://ciobrainapi.azurewebsites.net/asset"
+let errorLoggingURL = URL + "/log"
 
 export async function log(error, details) {
     displayMessage(error)
@@ -22,8 +26,9 @@ function displayMessage(error) {
 
 function getCurrentDateTime() {
     const today = new Date()
-    const date = `${today.getFullYear()}-${today.getMonth() + 1
-        }-${today.getDate()}`
+    const date = `${today.getFullYear()}-${
+        today.getMonth() + 1
+    }-${today.getDate()}`
     const time = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`
     return `${date} ${time}`
 }

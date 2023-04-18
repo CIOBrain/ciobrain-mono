@@ -16,6 +16,8 @@ const getAssetController = (req, res, next) => {
     res.json({ error: "Invalid asset type" })
 }
 
+const deleteTest = (req, res) => req.assetController.delete(req, res)
+
 const findAll = (req, res) => req.assetController.findAll(req, res)
 
 const push = (req, res) => req.assetController.push(req, res)
@@ -51,7 +53,9 @@ const asset = assetRouter.route("/:type");
 asset.get(findAll);
 
 asset.post(/*authenticate, */push)
+assetRouter.route("/:type").get(findAll).post(push)
 assetRouter.get("/:type/:id", findById)
 assetRouter.get("/:type/:id/children", findChildrenById)
+assetRouter.delete("/:type/:id", deleteTest)
 
 export default assetRouter

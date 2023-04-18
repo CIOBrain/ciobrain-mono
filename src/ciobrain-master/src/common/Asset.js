@@ -25,6 +25,14 @@ const post = async (url, data) => {
     }
 }
 
+const deleteA = async (url, data) => {
+    try {
+        return (await api.delete(url, data)).data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const getAssetById = async (category, id) =>
     await get(`/${category}/${id}`)
 
@@ -36,6 +44,9 @@ export const getAllAssetsForCategory = async category =>
 
 export const pushAssets = async (category, assets) =>
     await post(`/${category}`, assets)
+
+export const deleteAsset = async(category,id) =>
+    await deleteA(`/${category}/${id}`)
 
 export const getAllAssets = async () =>
     (
