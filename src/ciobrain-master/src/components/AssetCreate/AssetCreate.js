@@ -5,7 +5,7 @@ import "./AssetCreate.css"
 import "reactjs-popup/dist/index.css"
 import { DataType } from "../../common/DataType";
 //import XLSX from "xlsx"
-//import * as ASSET from "../../common/Asset.js"
+import * as ASSET from "../../common/Asset.js"
 
 const modalStyle = {
     maxWidth: "1200px",
@@ -56,6 +56,33 @@ export default class AssetCreate extends Component {
             justifyContent: "center"
         })
 
+        const submit = event => {
+            event.preventDefault()
+            const category = this.state.category
+            const newAsset = {
+                "Infrastructure ID": 1,
+                "Long Type": "physical server",
+                "Short Type": "Phy SVR",
+                "Name": "Server-1",
+                "Infrastructure Connections": " ",
+                "Data Connections": " ",
+                "Rack Coordinates": "r15-2",
+                "Vendor": "Dell",
+                "Model": "d-415",
+                "Software": "win 10",
+                "Serial Number ": "sn-2248",
+                "IP Address": "10.176.138.32",
+                "Owner": "George Ito"
+            }
+            //this.setState({asset: newAsset})
+            this.state.asset = newAsset;
+            console.log(this.state.asset)
+            console.log(newAsset)
+            this.pushAssets().then(result => {
+                this.setState({ result: result })
+            })
+        }
+
         const inputResult = () => {
             const category = this.state.category
             switch (category) {
@@ -77,13 +104,6 @@ export default class AssetCreate extends Component {
                         </>
                     )
             }
-        }
-
-        const submit = event => {
-            event.preventDefault()
-            this.pushAssets().then(result => {
-                this.setState({ result: result })
-            })
         }
 
         const validateResult = () => {
@@ -133,8 +153,11 @@ export default class AssetCreate extends Component {
         const typeOptions = Object.values(DataType);
 
         const handleSelect = () => {
-            var mylist = document.getElementById("createSelect");
-            //document.getElementById("selected").value = mylist.options[mylist.selectedIndex].text;
+            var dropdownList = document.getElementById("createSelect");
+            console.log(dropdownList.options[dropdownList.selectedIndex].text);
+            this.state.category = dropdownList.options[dropdownList.selectedIndex].text;
+            //this.setState({category: dropdownList.options[dropdownList.selectedIndex].text});
+            console.log(this.state.category)
         }
 
         return (
@@ -192,7 +215,9 @@ export default class AssetCreate extends Component {
         const state = this.state
         const category = state.category
         const asset = state.asset
-        if (!category || !asset) return { error: "Invalid Asset" }
-        //return await ASSET.pushAssets(category.name, asset)
+        console.log(category)
+        console.log(asset)
+        //if (!category || !asset) return { error: "Invalid Asset" }
+        return await ASSET.pushAssets(category.name, asset)
     }
 }
