@@ -3,6 +3,7 @@ import Popup from "reactjs-popup"
 //import { AssetCategoryEnum } from "../AssetCategoryEnum.js"
 import "./AssetCreate.css"
 import "reactjs-popup/dist/index.css"
+import { DataType } from "../../common/DataType";
 //import XLSX from "xlsx"
 //import * as ASSET from "../../common/Asset.js"
 
@@ -46,21 +47,43 @@ export default class AssetCreate extends Component {
             this.setState({ category: null, asset: null, result: null })
         }
 
-        // const labelStyle = color => ({
-        //     display: "flex",
-        //     width: "33.33%",
-        //     color: color,
-        //     margin: "auto",
-        //     fontSize: "20px",
-        //     justifyContent: "center"
-        // })
+        const labelStyle = color => ({
+            display: "flex",
+            width: "33.33%",
+            color: color,
+            margin: "auto",
+            fontSize: "20px",
+            justifyContent: "center"
+        })
+
+        const inputResult = () => {
+            const category = this.state.category
+            switch (category) {
+                case null:
+                    return ""
+                default:
+                    return (
+                        <>
+                            <label style={labelStyle(category.color)}>
+                                {category.name}
+                            </label>
+                            <button
+                                className="loadButton"
+                                disabled={this.state.result}
+                                type="submit"
+                                style={{ width: "33.33%" }}>
+                                Confirm
+                            </button>
+                        </>
+                    )
+            }
+        }
 
         const submit = event => {
             event.preventDefault()
-            //const url = document.getElementById('Azure-API-URL').value;
-            //const password = document.getElementById('Azure-API-Password').value
-            const result = true;
-            this.setState({ result: result })
+            this.pushAssets().then(result => {
+                this.setState({ result: result })
+            })
         }
 
         const validateResult = () => {
@@ -107,6 +130,13 @@ export default class AssetCreate extends Component {
             )
         }
 
+        const typeOptions = Object.values(DataType);
+
+        const handleSelect = () => {
+            var mylist = document.getElementById("createSelect");
+            //document.getElementById("selected").value = mylist.options[mylist.selectedIndex].text;
+        }
+
         return (
             <div className="modal">
                 <div className="close" onClick={closeAndReset}>
@@ -114,6 +144,14 @@ export default class AssetCreate extends Component {
                 </div>
                 <div className="header">Create Assets</div>
                 <div className="content">
+                    <div>
+                        <label id="dropMenu">Select a data type:</label>
+                        <select id="createSelect" onChange={handleSelect}>
+                            {typeOptions.map(type => (
+                                <option key={type} value={type}>{type}</option>
+                            ))}
+                        </select>
+                    </div>
                     <form onSubmit={submit} style={formStyle}>
                         <input
                             type="text"
@@ -142,10 +180,19 @@ export default class AssetCreate extends Component {
                         <input
                             type="submit"
                         />
+                        {inputResult()}
                     </form>
                     {validateResult()}
                 </div>
             </div>
         )
+    }
+
+    async pushAssets() {
+        const state = this.state
+        const category = state.category
+        const asset = state.asset
+        if (!category || !asset) return { error: "Invalid Asset" }
+        //return await ASSET.pushAssets(category.name, asset)
     }
 }
