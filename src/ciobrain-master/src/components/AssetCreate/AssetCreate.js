@@ -118,7 +118,7 @@ export default class AssetCreate extends Component {
                 }
 
                 this.setState({asset: newAsset}, () => {
-                    console.log(this.state.asset)
+                    //console.log(this.state.asset)
                 });                                                                  //setState not working cuz is asynchronous. Needed to use = newAsset;
                 //this.state.asset = newAsset;
                 // console.log(this.state.asset)
@@ -179,14 +179,15 @@ export default class AssetCreate extends Component {
             // this.setState({category: DataType.Application}, () => {
             //     console.log(this.state.category);
             // });
-            this.state.category = DataType.Application;
-            console.log(this.state.category);
+            // this.state.category = DataType.Application;
+            // console.log(this.state.category);
         }
         const handleSelect = () => {
             var dropdownList = document.getElementById("createSelect");
-            this.state.category = dropdownList.options[dropdownList.selectedIndex].text;
-            //this.setState({category: dropdownList.options[dropdownList.selectedIndex].text});
-            console.log(this.state.category)
+            // this.state.category = dropdownList.options[dropdownList.selectedIndex].text;
+            this.setState({category: dropdownList.options[dropdownList.selectedIndex].text}, () => {
+                console.log(this.state.category)
+            });
         }
 
         //UI

@@ -55,7 +55,7 @@ export default class Login extends Component {
 
         const handleSubmit = async(event) => {
             event.preventDefault()
-            console.log(this.state.password+ " " + this.state.loginsucc)
+            console.log("Password entered: " + this.state.password+ " ")
             await this.pushLogin()
             if(this.state.loginsucc==='Success'){
                 close(event)
@@ -97,7 +97,7 @@ export default class Login extends Component {
     async pushLogin() {
         const password = this.state.password
         await post(URL, {pass: password}).then(response => {
-            console.log(URL + " " + response)
+            console.log("API url: " + URL + ", Login result: " + response)
             this.setState({loginsucc: response});
         })
     }

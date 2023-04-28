@@ -55,7 +55,7 @@ export default class AssetDelete extends Component {
         //     justifyContent: "center"
         // })
         const asset = this.props.asset
-        const cat = this.props.cat
+        //const cat = this.props.cat
         function handleSubmit(event) {
             //event.preventDefault();
             /* uncommect to enable the form

@@ -21,6 +21,7 @@ export default class AssetMenu extends Component {
     selectAsset(assetKey) {
         this.setState({ selectedAssetKey: assetKey })
         this.props.selectAsset(this.state.selectedCategory, assetKey)
+        //console.log(assetKey);
     }
 
     render() {

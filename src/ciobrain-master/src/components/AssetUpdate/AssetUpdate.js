@@ -80,7 +80,7 @@ export default class AssetUpdate extends Component {
             }
 
             this.setState({asset: tempAsset}, () => {
-                //console.log(this.state.asset)
+                //console.log("state.asset: " + this.state.asset +", vs tempAsset: "+ tempAsset)
             });
 
             this.pushAssets().then(result => {
