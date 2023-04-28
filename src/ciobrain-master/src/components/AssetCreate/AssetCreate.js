@@ -58,52 +58,27 @@ export default class AssetCreate extends Component {
 
         const submit = event => {
             event.preventDefault()
-            const category = this.state.category
             const newAsset = {
-                "Infrastructure ID": 1,
-                "Long Type": "physical server",
-                "Short Type": "Phy SVR",
-                "Name": "Server-1",
+                "Application ID": 5,
+                "Type": "core",
+                "Short Type": "App",
+                "Name": "Product maint1",
                 "Infrastructure Connections": " ",
-                "Data Connections": " ",
-                "Rack Coordinates": "r15-2",
-                "Vendor": "Dell",
-                "Model": "d-415",
-                "Software": "win 10",
-                "Serial Number ": "sn-2248",
-                "IP Address": "10.176.138.32",
-                "Owner": "George Ito"
+                "Data Connections": "D-1",
+                "Type ": "web",
+                "Owner": "Lynne Apple",
+                "Vendor": "internal",
+                "Language": "JAVA",
+                "Software": "browser",
+                "Business Function": "sales"
             }
-            //this.setState({asset: newAsset})
+            //this.setState({asset: newAsset})                                     //setState not working cuz is asynchronous. Needed to use = newAsset;
             this.state.asset = newAsset;
             console.log(this.state.asset)
             console.log(newAsset)
             this.pushAssets().then(result => {
                 this.setState({ result: result })
             })
-        }
-
-        const inputResult = () => {
-            const category = this.state.category
-            switch (category) {
-                case null:
-                    return ""
-                default:
-                    return (
-                        <>
-                            <label style={labelStyle(category.color)}>
-                                {category.name}
-                            </label>
-                            <button
-                                className="loadButton"
-                                disabled={this.state.result}
-                                type="submit"
-                                style={{ width: "33.33%" }}>
-                                Confirm
-                            </button>
-                        </>
-                    )
-            }
         }
 
         const validateResult = () => {
@@ -150,16 +125,27 @@ export default class AssetCreate extends Component {
             )
         }
 
+        //UI Functions
         const typeOptions = Object.values(DataType);
-
+        const setDefaultSelect = () => {
+            // this.setState({category: DataType.Application}, () => {
+            //     console.log(this.state.category);
+            // });
+            this.state.category = DataType.Application;
+            console.log(this.state.category);
+        }
         const handleSelect = () => {
             var dropdownList = document.getElementById("createSelect");
-            console.log(dropdownList.options[dropdownList.selectedIndex].text);
             this.state.category = dropdownList.options[dropdownList.selectedIndex].text;
             //this.setState({category: dropdownList.options[dropdownList.selectedIndex].text});
             console.log(this.state.category)
         }
+        const handleChange = event =>{
+            this.setState({password: event.target.value});
+            event.preventDefault();
+        }
 
+        //UI
         return (
             <div className="modal">
                 <div className="close" onClick={closeAndReset}>
@@ -174,6 +160,7 @@ export default class AssetCreate extends Component {
                                 <option key={type} value={type}>{type}</option>
                             ))}
                         </select>
+                        {setDefaultSelect()}
                     </div>
                     <form onSubmit={submit} style={formStyle}>
                         <input
@@ -181,6 +168,7 @@ export default class AssetCreate extends Component {
                             placeholder = "Asset Name:"
                             style={{ width: "33.34%", margin: "auto" }}
                             id="asset-name"
+                            onChange={handleChange}
                         />
                         <input
                             type = "text"
@@ -203,7 +191,6 @@ export default class AssetCreate extends Component {
                         <input
                             type="submit"
                         />
-                        {inputResult()}
                     </form>
                     {validateResult()}
                 </div>
@@ -212,12 +199,13 @@ export default class AssetCreate extends Component {
     }
 
     async pushAssets() {
-        const state = this.state
-        const category = state.category
-        const asset = state.asset
+        //this.state.category = DataType.Application;
+        //this.setState({category: DataType.Application});
+        const category = this.state.category
+        const assets = [this.state.asset];
         console.log(category)
-        console.log(asset)
-        //if (!category || !asset) return { error: "Invalid Asset" }
-        return await ASSET.pushAssets(category.name, asset)
+        console.log(assets)
+        if (!category || !assets) return { error: "Invalid Asset" }
+        return await ASSET.pushAssets(category, assets)
     }
 }
