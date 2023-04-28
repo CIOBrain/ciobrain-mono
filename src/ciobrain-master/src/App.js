@@ -19,7 +19,15 @@ export default class App extends Component {
         }
         window.app = this
         this.removeMessage = this.removeMessage.bind(this)
+        //this.handler = this.handler.bind(this)
     }
+    /*
+    handler(category,key) {
+        this.setState({
+          selectedCategory: category,
+          selectedAssetKey: key
+        })
+    }*/
 
     addMessage(message) {
         let messages = this.state.messages
@@ -88,12 +96,15 @@ export default class App extends Component {
                     <AssetDetails
                         selectedCategory={this.state.selectedCategory}
                         selectedAssetKey={this.state.selectedAssetKey}
+                        //assetSelect={this.selectAsset}
                     />
                     <AssetMenu selectAsset={this.selectAsset.bind(this)} />
                 </div>                
                 <Graph
                     selectedCategory={this.state.selectedCategory}
                     selectedAssetKey={this.state.selectedAssetKey}
+                     //handler={this.handler} 
+                    //assetSelect={this.selectAsset}
                 />
                 {this.state.messages &&
                     this.state.messages.map((message, index) => (

@@ -18,6 +18,7 @@ export default class AssetDetails extends Component {
     }
 
     async componentWillReceiveProps(nextProps) {
+        //console.log("1")
         if (
             this.state.selectedCategory === nextProps.selectedCategory &&
             this.state.selectedAssetKey === nextProps.selectedAssetKey
@@ -32,9 +33,12 @@ export default class AssetDetails extends Component {
             nextProps.selectedCategory
         )
     }
-
+ 
     async getAssetDetails(selectedAssetKey, selectedCategory) {
+        //console.log("2")
         const asset = await getAssetById(selectedCategory, selectedAssetKey)
+        asset["cat"] = selectedCategory
+        asset["Id"] = selectedAssetKey
         const assetConnections = this.countAssetConnections(asset)
         const assetColor =
             AssetCategoryEnum[asset["Asset Type"].toUpperCase()].color
@@ -47,6 +51,7 @@ export default class AssetDetails extends Component {
     }
 
     async validateAsset(asset) {
+        //console.log("3")
         const type =
             asset["Asset Type"] === "Infrastructure" ? "Long Type" : "Type"
         const requiredDetails = [type, "Owner", "Vendor", "Language"]
@@ -64,6 +69,7 @@ export default class AssetDetails extends Component {
     }
 
     countAssetConnections(asset) {
+        //console.log("4")
         return Object.values(AssetCategoryEnum)
             .map(category => {
                 const connections = asset[category.name + " Connections"]
@@ -76,6 +82,7 @@ export default class AssetDetails extends Component {
 
     render() {
         const asset = this.state.asset
+        //console.log("5")
         return asset ? (
             <div id="assetDetail" className="card">
                 <input type="checkbox" id="expandDetails"/>
@@ -107,7 +114,7 @@ export default class AssetDetails extends Component {
                 <div id="assetMenuHeader">
                     <div>Modify</div>
                     <AssetUpdate />
-                    <AssetDelete />
+                    <AssetDelete asset={asset} />
                 </div>
             </div>
         ) : null

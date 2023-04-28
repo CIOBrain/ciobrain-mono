@@ -53,19 +53,18 @@ export default class BaseAssetModel {
         );
         if (index !== -1) {
             // Delete the asset from the array and return it
-            return this.data.splice(index, 1)[0];
+            this.data.splice(index, 1)[0];
+            // Convert the updated data array back to a worksheet object
+            const worksheet = XLSX.utils.json_to_sheet(this.data)
+
+            // Write the worksheet object back to the Excel file
+            const newWorkbook = XLSX.utils.book_new()
+            XLSX.utils.book_append_sheet(newWorkbook, worksheet, "Sheet1")
+            XLSX.writeFile(newWorkbook, this.filePath)
+
+            return this.data;
         }
     };
-
-
-    delete = id => 
-        this.data.find(
-            item => parseInt(item[this.assetType + " ID"]) === parseInt(id)
-        )
-        /*if (index !== -1) {
-            // Delete the asset from the array and return it
-            return this.data.splice(index, 1)[0];
-        }*/
     
     findById = id =>
         this.data.find(

@@ -55,15 +55,19 @@ export default class AssetDelete extends Component {
         //     fontSize: "20px",
         //     justifyContent: "center"
         // })
-
+        const asset = this.props.asset
+        const cat = this.props.cat
         function handleSubmit(event) {
             //event.preventDefault();
+            /* uncommect to enable the form
             const formData = new FormData(event.target);
             const selectedValue = formData.get('selectedOption');
             const textInput = event.target.textInput.value
-            ASSET.deleteAsset(selectedValue,textInput)
+            */
+            ASSET.deleteAsset(asset["cat"],asset["Id"])
         }
 
+        /*return the from to pick 
         return (
                 <div className="modal">
                     <div className="close" onClick={closeAndReset}>
@@ -92,8 +96,28 @@ export default class AssetDelete extends Component {
                     </form>
                 </div>
             </div>
+        );*/
+        
+        return (
+            <div className="modal">
+                <div className="close" onClick={closeAndReset}>
+                    &times;
+                </div>
+                <div className="header">Are you sure you want to delete {asset["Name"]}?</div>
+                <div className="content">
+                <form onSubmit={handleSubmit} style={formStyle}>
+                    
+                    <input type="submit" value="Submit" />
+                </form>
+                </div>
+            </div>
         );
+
     }
+
+
+
+    
 
     async deleteAsset(selectedAsset,id) {
         const state = this.state

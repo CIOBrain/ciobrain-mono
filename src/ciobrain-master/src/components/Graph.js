@@ -2,7 +2,7 @@ import React, {Component} from "react"
 import * as d3 from "d3"
 import "./Graph.css"
 import {AssetCategoryEnum} from "./AssetCategoryEnum"
-import {getAllAssets, getAssetChildrenById} from "../common/Asset.js"
+import {getAllAssets, getAssetById,getAssetChildrenById} from "../common/Asset.js"
 
 export default class Graph extends Component {
     constructor(props) {
@@ -19,6 +19,7 @@ export default class Graph extends Component {
             zoomTransform: null,
             expanded: []
         }
+        //this.renderAssetDetails = this.renderAssetDetails.bind(this)
     }
 
     async componentWillReceiveProps(nextProps) {
@@ -44,6 +45,7 @@ export default class Graph extends Component {
     }
 
     async componentDidMount() {
+        //console.log("mount")
         this.initDimensions()
         window.addEventListener("resize", async _ => {
             if (!this.state.selectedCategory || !this.state.selectedAssetKey)
@@ -52,6 +54,12 @@ export default class Graph extends Component {
             this.setState({
                 resizeTimeout: setTimeout(await this.updateDimensions, 500)
             })
+            /*
+            const category = this.state.selectedCategory
+            const key = this.state.selectedAssetKey
+            this.props.handler(category,key);
+            console.log("kskskssk",category,key)
+            */
         })
     }
 
@@ -71,23 +79,90 @@ export default class Graph extends Component {
     clearGraph() {
         d3.selectAll("svg").remove().exit()
     }
-
+    /*
     // Add assets to the graph.
     async expandAsset(category, key) {
-        const id = `${category.charAt(0)}-${key}`
-        const expanded = this.state.expanded
-        if (expanded.includes(id)) return
+        //const id = `${category.charAt(0)}-${key}`
+        //const expanded = this.state.expanded
+        //if (expanded.includes(id)) return
         const nodesAndLink = await this.getNodesAndLinks(
             category,
             key,
             this.state.data.nodes
         )
-        await this.setState({ data: nodesAndLink })
+        const asset = await getAssetById(category,key)
+        
+        const assetDetails = (
+            <div>
+                <AssetDetails
+                    selectedCategory={category}
+                    selectedAssetKey={key}
+                />
+            </div>
+        )
+
+        const updatedAssetDetails = (
+            <div>
+                <AssetDetails
+                    selectedCategory={category}
+                    selectedAssetKey={key}
+                />
+            </div>
+        )
+        if (this.state.assetDetails) {
+            console.log(category,key,nodesAndLink)
+            await this.setState({
+                data: nodesAndLink,
+                selectedCategory: category,
+                selectedAssetKey: key,
+                assetDetails: updatedAssetDetails
+            })
+        } else {
+            console.log("I dont")
+            await this.setState({
+                data: nodesAndLink,
+                selectedCategory: category,
+                selectedAssetKey: key,
+                assetDetails: assetDetails
+            })
+        }
+
+
+        await this.setState({ data: nodesAndLink, selectedCategory: category, selectedAssetKey: key })
+        await this.update(
+            category,
+            key
+        )
+
+        await this.setState({
+            data: nodesAndLink,
+            selectedCategory: category,
+            selectedAssetKey: key,
+            assetDetails: assetDetails
+        })
+
+        await this.update(category, key)
+        //expanded.push(id)
+    }*/
+
+    
+    async expandAsset(category, key) {
+        //const id = `${category.charAt(0)}-${key}`
+        //const expanded = this.state.expanded
+        //if (expanded.includes(id)) return
+        const asset = getAssetById(category,key)
+        const nodesAndLink = await this.getNodesAndLinks(
+            category,
+            key,
+            this.state.data.nodes
+        )
+        await this.setState({ data: nodesAndLink})
         await this.update(
             this.state.selectedCategory,
-            this.state.selectedAssetKey
+            this.state.selectedAssetKey,
+            this.state.asset
         )
-        expanded.push(id)
+        //expanded.push(id)
     }
 
     tagAndAddIfNew = (asset, nodes) => {
@@ -350,7 +425,22 @@ export default class Graph extends Component {
             const category = d["Asset Type"]
             const key = d[category + " ID"]
             this.expandAsset(category, key)
+            //App.setState(selectedCategory =  category, selectedAssetKey = key)
+            //console.log(category,key,"lalal")
         }
+        /*
+        let nodeClick = (_, d) => {
+            const category = d["Asset Type"]
+            const key = d[category + " ID"]
+            this.expandAsset(category, key)
+            console.log(category,key)
+            if (this.state.selectedCategory === category && this.state.selectedAssetKey === key) {
+                console.log("AssetDetails already rendered")
+            } else {
+                this.setState({ selectedCategory: category, selectedAssetKey: key })
+            }
+        }*/
+
 
         let nodeHoverEnter = (event, assetData) => {
             // highlight connected links
@@ -439,6 +529,11 @@ export default class Graph extends Component {
         // get the selected node from the list of nodes and update connection in AssetDetails
         // this is a cheap fix. need to find a better way
         data.nodes.forEach(node => {
+            //console.log(data.nodes)
+            //const asset = getAssetById(this.asset.category,this.asset.key)
+            //const props ={
+            //    asset: asset
+            //}
             if (matchSelected(node, true, false)) {
                 const elem = document.getElementById("asset_connections")
                 if (!elem) return
@@ -446,7 +541,7 @@ export default class Graph extends Component {
             }
         })
     }
-
+   
     render() {
         return <div className="graph" ref={this.graphReference} />
     }
