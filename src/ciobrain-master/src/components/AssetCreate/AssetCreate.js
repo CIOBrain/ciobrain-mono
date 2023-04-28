@@ -25,7 +25,9 @@ const formStyle = {
 export default class AssetCreate extends Component {
     constructor(props) {
         super(props)
-        this.state = { category: null, asset: null, result: null }
+        this.state = { category: null, asset: null, result: null,
+        tempAssetID: null, tempAssetName: null, tempAssetType: null, tempAssetShortType: null,
+        tempConnectionApp: null, tempConnectionData: null, tempConnectionInfra: null }
     }
 
     render() {
@@ -44,40 +46,86 @@ export default class AssetCreate extends Component {
     popupContent(close) {
         const closeAndReset = event => {
             close(event)
-            this.setState({ category: null, asset: null, result: null })
+            this.setState({ category: null, asset: null, result: null,
+                            tempAssetID: null, tempAssetName: null, tempAssetType: null, tempAssetShortType: null,
+                            tempConnectionApp: null, tempConnectionData: null, tempConnectionInfra: null })
         }
-
-        const labelStyle = color => ({
-            display: "flex",
-            width: "33.33%",
-            color: color,
-            margin: "auto",
-            fontSize: "20px",
-            justifyContent: "center"
-        })
 
         const submit = event => {
             event.preventDefault()
-            const newAsset = {
-                "Application ID": 5,
-                "Type": "core",
-                "Short Type": "App",
-                "Name": "Product maint1",
-                "Infrastructure Connections": " ",
-                "Data Connections": "D-1",
-                "Type ": "web",
-                "Owner": "Lynne Apple",
-                "Vendor": "internal",
-                "Language": "JAVA",
-                "Software": "browser",
-                "Business Function": "sales"
-            }
-            //this.setState({asset: newAsset})                                     //setState not working cuz is asynchronous. Needed to use = newAsset;
-            this.state.asset = newAsset;
-            console.log(this.state.asset)
-            console.log(newAsset)
-            this.pushAssets().then(result => {
-                this.setState({ result: result })
+            // const newAsset = {                                                                               //Template Asset for your pleasure
+            //     "Application ID": 6,
+            //     "Type": "core",
+            //     "Short Type": "App",
+            //     "Name": "Product maint2",
+            //     "Infrastructure Connections": " ",
+            //     "Data Connections": "D-1",
+            //     "Type ": "web",
+            //     "Owner": "Lynne Apple",
+            //     "Vendor": "internal",
+            //     "Language": "JAVA",
+            //     "Software": "browser",
+            //     "Business Function": "sales"
+            // }
+            var newAsset = {};
+            var textboxName = document.getElementById("asset-name").value;
+            var textboxType = document.getElementById("asset-type").value;
+            var textboxShortType = document.getElementById("asset-short-type").value;
+            var textboxConnection = document.getElementById("asset-connection").value;
+            var assetID;
+            console.log(textboxName +" "+ textboxType +" "+ textboxShortType +" "+ textboxConnection);
+            
+            //Begin creating asset
+            ASSET.getAllAssetsForCategory(this.state.category).then(currAssets => {
+                assetID = currAssets.length;                                                                  //returns length of assets in category
+            
+                if(this.state.category === "Application") {                                                          //This method sucks, since the tables have different values
+                    newAsset = {
+                        "Application ID": assetID,
+                        "Type": textboxType,
+                        "Short Type": textboxShortType,
+                        "Name": textboxName,
+                        "Data Connections": textboxConnection
+                    }
+                } else if(this.state.category === "Data") {
+                    newAsset = {
+                        "Data ID": assetID,
+                        "Type": textboxType,
+                        "Short Type": textboxShortType,
+                        "Name": textboxName,
+                        "Infrastructure Connections": " ",
+                        "Data Connections": " ",
+                        "Application Connections": " "
+                    }
+                } else if(this.state.category === "Infrastructure") {
+                    newAsset = {
+                        "Infrastructure ID": assetID,
+                        "Type": textboxType,
+                        "Short Type": textboxShortType,
+                        "Name": textboxName,
+                        "Application Connections": textboxConnection
+                    }
+                } else {
+                    newAsset = {
+                        "Project ID": assetID,
+                        "Type": textboxType,
+                        "Short Type": textboxShortType,
+                        "Name": textboxName,
+                        "Infrastructure Connections": " ",
+                        "Data Connections": " ",
+                        "Application Connections": " ",
+                    }
+                }
+
+                this.setState({asset: newAsset}, () => {
+                    console.log(this.state.asset)
+                });                                                                  //setState not working cuz is asynchronous. Needed to use = newAsset;
+                //this.state.asset = newAsset;
+                // console.log(this.state.asset)
+                // console.log(newAsset)
+                this.pushAssets().then(result => {
+                    this.setState({ result: result })
+                })
             })
         }
 
@@ -140,10 +188,6 @@ export default class AssetCreate extends Component {
             //this.setState({category: dropdownList.options[dropdownList.selectedIndex].text});
             console.log(this.state.category)
         }
-        const handleChange = event =>{
-            this.setState({password: event.target.value});
-            event.preventDefault();
-        }
 
         //UI
         return (
@@ -168,7 +212,6 @@ export default class AssetCreate extends Component {
                             placeholder = "Asset Name:"
                             style={{ width: "33.34%", margin: "auto" }}
                             id="asset-name"
-                            onChange={handleChange}
                         />
                         <input
                             type = "text"

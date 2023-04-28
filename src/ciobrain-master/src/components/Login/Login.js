@@ -99,7 +99,7 @@ export default class Login extends Component {
         await post(URL, {pass: password}).then(response => {
             console.log(URL + " " + response)
             this.setState({loginsucc: response});
-    })
+        })
     }
 }
 
