@@ -35,6 +35,8 @@ export default class AssetDetails extends Component {
 
     async getAssetDetails(selectedAssetKey, selectedCategory) {
         const asset = await getAssetById(selectedCategory, selectedAssetKey)
+        asset["cat"] = selectedCategory
+        asset["Id"] = selectedAssetKey
         const assetConnections = this.countAssetConnections(asset)
         const assetColor =
             AssetCategoryEnum[asset["Asset Type"].toUpperCase()].color
@@ -107,7 +109,7 @@ export default class AssetDetails extends Component {
                 <div id="assetMenuHeader">
                     <div>Modify</div>
                     <AssetUpdate />
-                    <AssetDelete />
+                    <AssetDelete asset={asset} />
                 </div>
             </div>
         ) : null
