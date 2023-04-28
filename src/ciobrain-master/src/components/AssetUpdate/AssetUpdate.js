@@ -59,12 +59,41 @@ export default class AssetUpdate extends Component {
             event.preventDefault()
             //const url = document.getElementById('Azure-API-URL').value;
             //const password = document.getElementById('Azure-API-Password').value
-            const result = true;
-            this.setState({ result: result })
+            //const result = true;
+            var textboxName = document.getElementById("asset-name").value;
+            var textboxType = document.getElementById("asset-type").value;
+            var textboxShortType = document.getElementById("asset-short-type").value;
+            var textboxConnection = document.getElementById("asset-connection").value;
+            //this.getAssetById(this.state.selectedAssetKey);
+            const tempAsset = this.state.asset;
+            if(textboxName !== ""){
+                tempAsset[ 'Name' ] = textboxName;
+            }
+            if(textboxType !== ""){
+                tempAsset[ 'Type' ] = textboxType;
+            }
+            if(textboxShortType !== ""){
+                tempAsset[ 'Short Type' ] = textboxShortType;
+            }
+            if(textboxConnection !== ""){
+                tempAsset[ 'Data Connections' ] = textboxConnection;
+            }
+
+            this.setState({asset: tempAsset}, () => {
+                console.log(this.state.asset)
+            });
+
+            this.pushAssets().then(result => {
+                this.setState({ result: result })
+            })
+            
+            //this.setState({ result: result })
         }
 
         const validateResult = () => {
             const result = this.state.result
+            console.log(result)
+            console.log("result")
             if (!result) return null
             const error = result["error"]
             if (error)
