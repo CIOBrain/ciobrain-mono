@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react';
-import { DataType } from '../common/DataType';
+import { DataType } from '../../common/DataType';
 
 // Define an interface for the component state
 interface DataTypeDropdownState {

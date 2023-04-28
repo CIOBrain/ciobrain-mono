@@ -1,8 +1,8 @@
 import { useState } from "react";
 import XLSX from "xlsx"
-import * as ASSET from "../common/Asset.js"
+import * as ASSET from "../../common/Asset.js"
 import DataTypeDropdown from "./DataTypeDropdown";
-import { DataType } from "../common/DataType";
+import { DataType } from "../../common/DataType";
 
 export default function AssetExport() {
     const [dataType, setType] = useState(DataType.Application);

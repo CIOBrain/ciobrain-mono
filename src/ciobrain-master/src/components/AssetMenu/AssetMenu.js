@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import AssetCategoryOption from "./AssetCategoryOption"
 import { AssetCategoryEnum } from "../AssetCategoryEnum"
 import AssetImport from "../AssetImport/AssetImport.js"
-import AssetExport from "../AssetExport"
+import AssetExport from "../AssetExport/AssetExport"
 import AssetCreate from "../AssetCreate/AssetCreate.js"
 
 export default class AssetMenu extends Component {
@@ -28,9 +28,9 @@ export default class AssetMenu extends Component {
             <div id="assetMenu" className="card">
                 <div id="assetMenuHeader">
                     <div>Assets</div>
+                    <AssetCreate />
                     <AssetImport />
                     <AssetExport />
-                    <AssetCreate />
                 </div>
                 {Object.values(AssetCategoryEnum).map(category => (
                     <AssetCategoryOption
