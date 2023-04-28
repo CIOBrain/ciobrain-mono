@@ -80,7 +80,7 @@ export default class AssetUpdate extends Component {
             }
 
             this.setState({asset: tempAsset}, () => {
-                console.log(this.state.asset)
+                //console.log(this.state.asset)
             });
 
             this.pushAssets().then(result => {
@@ -92,8 +92,8 @@ export default class AssetUpdate extends Component {
 
         const validateResult = () => {
             const result = this.state.result
-            console.log(result)
-            console.log("result")
+            //console.log(result)
+            //console.log("result")
             if (!result) return null
             const error = result["error"]
             if (error)
