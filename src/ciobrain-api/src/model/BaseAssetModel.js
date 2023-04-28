@@ -46,7 +46,7 @@ export default class BaseAssetModel {
             invalid: invalidAssets
         }
     }
-
+    //delete
     findByIdAndDelete = id => {
         const index = this.data.findIndex(
             item => parseInt(item[this.assetType + " ID"]) === parseInt(id)

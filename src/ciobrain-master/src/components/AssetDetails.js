@@ -18,7 +18,6 @@ export default class AssetDetails extends Component {
     }
 
     async componentWillReceiveProps(nextProps) {
-        //console.log("1")
         if (
             this.state.selectedCategory === nextProps.selectedCategory &&
             this.state.selectedAssetKey === nextProps.selectedAssetKey

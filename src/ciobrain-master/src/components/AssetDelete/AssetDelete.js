@@ -3,7 +3,6 @@ import Popup from "reactjs-popup"
 //import { AssetCategoryEnum } from "../AssetCategoryEnum.js"
 import "./AssetDelete.css"
 import "reactjs-popup/dist/index.css"
-//import XLSX from "xlsx"
 import * as ASSET from "../../common/Asset.js"
 
 const modalStyle = {
