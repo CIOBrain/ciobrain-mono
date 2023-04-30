@@ -4,7 +4,7 @@ import Popup from "reactjs-popup"
 import "./AssetUpdate.css"
 import "reactjs-popup/dist/index.css"
 //import XLSX from "xlsx"
-//import * as ASSET from "../../common/Asset.js"
+import * as ASSET from "../../common/Asset.js"
 
 const modalStyle = {
     maxWidth: "1200px",
@@ -24,7 +24,11 @@ const formStyle = {
 export default class AssetUpdate extends Component {
     constructor(props) {
         super(props)
-        this.state = { category: null, asset: null, result: null }
+        this.state = { category: null, 
+                    asset: null, 
+                    result: null, 
+                    selectedCategory: null,
+                    selectedAssetKey: null }
     }
 
     render() {
@@ -43,7 +47,11 @@ export default class AssetUpdate extends Component {
     popupContent(close) {
         const closeAndReset = event => {
             close(event)
-            this.setState({ category: null, asset: null, result: null })
+            this.setState({ category: null, 
+                asset: null, 
+                result: null, 
+                selectedCategory: null,
+                selectedAssetKey: null })
         }
 
         // const labelStyle = color => ({
@@ -55,7 +63,7 @@ export default class AssetUpdate extends Component {
         //     justifyContent: "center"
         // })
 
-        const submit = event => {
+        const submit = async event => {
             event.preventDefault()
             //const url = document.getElementById('Azure-API-URL').value;
             //const password = document.getElementById('Azure-API-Password').value
@@ -64,8 +72,13 @@ export default class AssetUpdate extends Component {
             var textboxType = document.getElementById("asset-type").value;
             var textboxShortType = document.getElementById("asset-short-type").value;
             var textboxConnection = document.getElementById("asset-connection").value;
-            //this.getAssetById(this.state.selectedAssetKey);
+            
+            this.getAssetById().then(asset => {
+                this.setState({ asset: asset })
+                console.log(asset)
+            })
             const tempAsset = this.state.asset;
+            console.log(tempAsset)
             if(textboxName !== ""){
                 tempAsset[ 'Name' ] = textboxName;
             }
@@ -80,7 +93,7 @@ export default class AssetUpdate extends Component {
             }
 
             this.setState({asset: tempAsset}, () => {
-                //console.log("state.asset: " + this.state.asset +", vs tempAsset: "+ tempAsset)
+                console.log(this.state.asset)
             });
 
             this.pushAssets().then(result => {
@@ -89,7 +102,7 @@ export default class AssetUpdate extends Component {
             
             //this.setState({ result: result })
         }
-
+        
         const validateResult = () => {
             const result = this.state.result
             //console.log(result)
@@ -176,5 +189,33 @@ export default class AssetUpdate extends Component {
                 </div>
             </div>
         )
+    }
+    async getAssetById(){
+        const category = this.state.selectedCategory
+        const assetid = this.state.selectedAssetKey
+        console.log(category)
+        console.log(assetid)
+        if (!category || !assetid) return { error: "Invalid Asset" }
+        return await ASSET.getAssetById(category, assetid)
+    }
+    async pushAssets() {
+        const state = this.state
+        const category = state.category
+        const asset = state.asset
+        console.log(category)
+        console.log(asset)
+        if (!category || !asset) return { error: "Invalid Asset" }
+        return await ASSET.pushAssets(category, asset)
+    }
+    async componentWillReceiveProps(nextProps) {
+        if (
+            this.state.selectedCategory === nextProps.selectedCategory &&
+            this.state.selectedAssetKey === nextProps.selectedAssetKey
+        )
+            return
+        this.setState({
+            selectedCategory: nextProps.selectedCategory,
+            selectedAssetKey: nextProps.selectedAssetKey
+        })
     }
 }
