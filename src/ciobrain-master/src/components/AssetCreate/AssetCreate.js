@@ -175,13 +175,13 @@ export default class AssetCreate extends Component {
 
         //UI Functions
         const typeOptions = Object.values(DataType);
-        const setDefaultSelect = () => {
-            // this.setState({category: DataType.Application}, () => {
-            //     console.log(this.state.category);
-            // });
-            // this.state.category = DataType.Application;
-            // console.log(this.state.category);
-        }
+        // const setDefaultSelect = () => {
+        //     // this.setState({category: DataType.Application}, () => {
+        //     //     console.log(this.state.category);
+        //     // });
+        //     // this.state.category = DataType.Application;
+        //     // console.log(this.state.category);
+        // }
         const handleSelect = () => {
             var dropdownList = document.getElementById("createSelect");
             // this.state.category = dropdownList.options[dropdownList.selectedIndex].text;
@@ -205,7 +205,6 @@ export default class AssetCreate extends Component {
                                 <option key={type} value={type}>{type}</option>
                             ))}
                         </select>
-                        {setDefaultSelect()}
                     </div>
                     <form onSubmit={submit} style={formStyle}>
                         <input
