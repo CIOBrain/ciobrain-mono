@@ -90,7 +90,7 @@ export default class AssetDetails extends Component {
                 </div>
                 <div id="assetDetailSections">
                     <div id="asset_connections">
-                        Connections: {this.state.assetConnections}
+                        Connections: {asset["Connections"]}
                     </div>
                     <div>
                         Type:{" "}
