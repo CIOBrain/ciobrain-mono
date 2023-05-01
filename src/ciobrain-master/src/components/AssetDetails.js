@@ -13,23 +13,27 @@ export default class AssetDetails extends Component {
             selectedAssetKey: null,
             asset: null,
             assetColor: null,
-            assetConnections: null
+            assetConnections: null,
+            assetInfo: []
         }
     }
 
     async componentWillReceiveProps(nextProps) {
         if (
             this.state.selectedCategory === nextProps.selectedCategory &&
-            this.state.selectedAssetKey === nextProps.selectedAssetKey
+            this.state.selectedAssetKey === nextProps.selectedAssetKey &&
+            this.state.assetInfo === nextProps.assetInfo
         )
             return
         this.setState({
             selectedCategory: nextProps.selectedCategory,
-            selectedAssetKey: nextProps.selectedAssetKey
+            selectedAssetKey: nextProps.selectedAssetKey,
+            assetInfo: nextProps.assetInfo
         })
         await this.getAssetDetails(
             nextProps.selectedAssetKey,
-            nextProps.selectedCategory
+            nextProps.selectedCategory,
+            nextProps.assetInfo
         )
     }
 
@@ -74,42 +78,44 @@ export default class AssetDetails extends Component {
             .reduce((a, b) => a + b, 0)
     }
 
-    render() {
-        const asset = this.state.asset
-        return asset ? (
-            <div id="assetDetail" className="card">
-                <input type="checkbox" id="expandDetails"/>
-                <div id="assetDetailHeader">
-                    <label className="detailsLabel" htmlFor="expandDetails">Details</label>
+    displayAssetInfo(asset) {
+        return <div id="assetDetail" className="card">
+            <input type="checkbox" id="expandDetails"/>
+            <div id="assetDetailHeader">
+                <label className="detailsLabel" htmlFor="expandDetails">Details</label>
+            </div>
+            <div className="detailsContent">
+                <div id="assetName" style={{ color: this.state.assetColor }}>
+                    {asset["Name"]}
                 </div>
-                <div className="detailsContent">
-                    <div id="assetName" style={{ color: this.state.assetColor }}>
-                        {asset["Name"]}
+                <div id="assetDetailSections">
+                    <div id="asset_connections">
+                        Connections: {this.state.assetConnections}
                     </div>
-                    <div id="assetDetailSections">
-                        <div id="asset_connections">
-                            Connections: {this.state.assetConnections}
-                        </div>
-                        <div>
-                            Type:{" "}
-                            {asset["Asset Type"] === "Infrastructure"
-                                ? asset["Long Type"]
-                                : asset["Type"]}
-                        </div>
-                        <div>Owner: {asset["Owner"]}</div>
-                        <div>Vendor: {asset["Vendor"]}</div>
-                        <div>Language: {asset["Language"]}</div>
-                        <div>Software: {asset["Software"]}</div>
-                        <div>Business Function: {asset["Business Function"]}</div>
-                        <div>Comment: {asset["Comment"]}</div>
+                    <div>
+                        Type:{" "}
+                        {asset["Asset Type"] === "Infrastructure"
+                            ? asset["Long Type"]
+                            : asset["Type"]}
                     </div>
-                </div>
-                <div id="assetMenuHeader">
-                    <div>Modify</div>
-                    <AssetUpdate />
-                    <AssetDelete />
+                    <div>Owner: {asset["Owner"]}</div>
+                    <div>Vendor: {asset["Vendor"]}</div>
+                    <div>Language: {asset["Language"]}</div>
+                    <div>Software: {asset["Software"]}</div>
+                    <div>Business Function: {asset["Business Function"]}</div>
+                    <div>Comment: {asset["Comment"]}</div>
                 </div>
             </div>
-        ) : null
+            <div id="assetMenuHeader">
+                <div>Modify</div>
+                <AssetUpdate />
+                <AssetDelete />
+            </div>
+        </div>
+    }
+
+    render() {
+        const asset = this.state.assetInfo
+        return asset ? (this.displayAssetInfo(asset)) : null
     }
 }

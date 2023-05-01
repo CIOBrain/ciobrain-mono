@@ -18,6 +18,14 @@
     font-weight: normal;
 }
 
+.assetDetail {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 10px;
+    top: 60px;
+}
+
 @media screen and (max-width: 812px) {
     .graph {
         position: relative;

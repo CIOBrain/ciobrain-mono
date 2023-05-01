@@ -3,6 +3,7 @@ import * as d3 from "d3"
 import "./Graph.css"
 import {AssetCategoryEnum} from "./AssetCategoryEnum"
 import {getAllAssets, getAssetChildrenById} from "../common/Asset.js"
+import AssetDetails from "./AssetDetails"
 
 export default class Graph extends Component {
     constructor(props) {
@@ -17,7 +18,8 @@ export default class Graph extends Component {
             resizeTimeout: null,
             data: { nodes: [], links: [] },
             zoomTransform: null,
-            expanded: []
+            expanded: [],
+            currNode: []
         }
     }
 
@@ -350,6 +352,7 @@ export default class Graph extends Component {
             const category = d["Asset Type"]
             const key = d[category + " ID"]
             this.expandAsset(category, key)
+            this.setState({currNode: d})
         }
 
         let nodeHoverEnter = (event, assetData) => {
@@ -441,13 +444,24 @@ export default class Graph extends Component {
         data.nodes.forEach(node => {
             if (matchSelected(node, true, false)) {
                 const elem = document.getElementById("asset_connections")
-                if (!elem) return
-                elem.innerHTML = "Connections: " + node.Connections
+                return // elem.innerHTML = "Connections: " + node.Connections
             }
         })
     }
 
     render() {
-        return <div className="graph" ref={this.graphReference} />
+        if (typeof this.state.currNode["Asset Type"] !== 'undefined') {
+            return <div className="graph" ref={this.graphReference}>
+                <div className="assetDetail">
+                    <AssetDetails
+                        selectedCategory = {this.state.currNode["Asset Type"]}
+                        selectedAssetKey = {this.state.currNode[this.state.currNode["Asset Type"] + " ID"]}
+                        assetInfo = {this.state.currNode}
+                    />
+                </div>
+            </div>
+        }
+        else
+            return <div className="graph" ref={this.graphReference}/>
     }
 }

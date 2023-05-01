@@ -78,17 +78,9 @@ export default class App extends Component {
                         >
                             {close => this.popupContent(close)}
                         </Popup>
-                        <AssetDetails
-                            selectedCategory={this.state.selectedCategory}
-                            selectedAssetKey={this.state.selectedAssetKey}
-                        />
                     </div>
                 }
                 <div className="assetsContainer">
-                    <AssetDetails
-                        selectedCategory={this.state.selectedCategory}
-                        selectedAssetKey={this.state.selectedAssetKey}
-                    />
                     <AssetMenu selectAsset={this.selectAsset.bind(this)} />
                 </div>                
                 <Graph
