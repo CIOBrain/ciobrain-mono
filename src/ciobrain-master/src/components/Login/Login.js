@@ -8,7 +8,7 @@ dotenv.config();
 
 const URL =
     process.env.NODE_ENV === "development"
-        ? "http://localhost:3002/auth"
+        ? process.env.REACT_APP_LOCAL + "/auth"
         : process.env.REACT_APP_API + "/auth"
 const api = axios.create({ baseURL: URL })
 console.log(process.env.REACT_APP_LOCAL + "/auth");
