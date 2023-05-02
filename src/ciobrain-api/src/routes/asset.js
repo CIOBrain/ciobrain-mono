@@ -52,7 +52,7 @@ const asset = assetRouter.route("/:type");
 */
 asset.get(findAll);
 
-asset.post(/*authenticate, */push)
+asset.post(authenticate, push)
 assetRouter.route("/:type").get(findAll).post(push)
 assetRouter.get("/:type/:id", findById)
 assetRouter.get("/:type/:id/children", findChildrenById)
