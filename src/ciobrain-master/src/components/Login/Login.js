@@ -11,7 +11,8 @@ const URL =
         ? "http://localhost:3002/auth"
         : process.env.REACT_APP_API + "/auth"
 const api = axios.create({ baseURL: URL })
-//console.log(process.env.LOCAL_APP_API + "/auth");
+console.log(process.env.REACT_APP_LOCAL + "/auth");
+console.log(process.env.REACT_APP_API + "/auth");
 //const api = axios.create({ baseURL: process.env.REACT_APP_API })
 
 
@@ -58,7 +59,7 @@ export default class Login extends Component {
 
         const handleSubmit = async(event) => {
             event.preventDefault()
-            console.log("Password entered: " + this.state.password+ " ")
+            console.log("Password entered: " + this.state.password)
             await this.pushLogin()
             if(this.state.loginsucc==='Success'){
                 close(event)
