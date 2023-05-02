@@ -3,12 +3,15 @@ import Popup from "reactjs-popup"
 import "./Login.css"
 import "reactjs-popup/dist/index.css"
 import axios from "axios"
+import dotenv from 'dotenv';
+dotenv.config();
 
 const URL =
     process.env.NODE_ENV === "development"
         ? "http://localhost:3002/auth"
-        : "https://ciobrainapi.azurewebsites.net/auth"
+        : process.env.REACT_APP_API + "/auth"
 const api = axios.create({ baseURL: URL })
+//console.log(process.env.LOCAL_APP_API + "/auth");
 //const api = axios.create({ baseURL: process.env.REACT_APP_API })
 
 
