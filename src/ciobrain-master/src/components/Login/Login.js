@@ -70,18 +70,11 @@ export default class Login extends Component {
             this.setState({password: event.target.value});
             event.preventDefault();
         }
-        const checkLoginned = event =>{
-            if(this.state.loginsucc==='True'){
-                console.log(this.state.loginsucc)
-                close(event)
-            }
-        }
 
         return (
             <div className="modal">
                 <div className="header">Login</div>
                 <div className="content">
-                    {checkLoginned}
                     <form onSubmit={handleSubmit} style={formStyle}>
                         <label>Enter your Password:</label>
                         <input

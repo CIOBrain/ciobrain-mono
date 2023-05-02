@@ -66,7 +66,7 @@ export default class App extends Component {
             <div>
                 <Header />
                 <div className="loginContainer">
-                
+                <Login />
                 </div>
                 {isSmallScreen && <div className="mobileAssetsContainer">
                         <Popup
