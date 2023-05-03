@@ -6,7 +6,7 @@ const authenticateRouter = Router()
 
 const checkAuth = (req, res, next) => {
     console.log(req.body)
-    if (req.body.pass === process.env.PASSWORD) {
+    if (req.body.pass === process.env.REACT_APP_PASSWORD) {
         res.status(200).send('Success')
         return;
     }
