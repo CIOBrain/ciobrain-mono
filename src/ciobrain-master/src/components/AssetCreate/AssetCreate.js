@@ -25,9 +25,7 @@ const formStyle = {
 export default class AssetCreate extends Component {
     constructor(props) {
         super(props)
-        this.state = { category: null, asset: null, result: null,
-        tempAssetID: null, tempAssetName: null, tempAssetType: null, tempAssetShortType: null,
-        tempConnectionApp: null, tempConnectionData: null, tempConnectionInfra: null }
+        this.state = { category: DataType.Application, asset: null, result: null }
     }
 
     render() {
@@ -46,9 +44,7 @@ export default class AssetCreate extends Component {
     popupContent(close) {
         const closeAndReset = event => {
             close(event)
-            this.setState({ category: null, asset: null, result: null,
-                            tempAssetID: null, tempAssetName: null, tempAssetType: null, tempAssetShortType: null,
-                            tempConnectionApp: null, tempConnectionData: null, tempConnectionInfra: null })
+            this.setState({ category: null, asset: null, result: null })
         }
 
         const submit = event => {
@@ -77,7 +73,7 @@ export default class AssetCreate extends Component {
             
             //Begin creating asset
             ASSET.getAllAssetsForCategory(this.state.category).then(currAssets => {
-                assetID = currAssets.length;                                                                  //returns length of assets in category
+                assetID = currAssets.length + 1;                                                                  //returns length of assets in category
             
                 if(this.state.category === "Application") {                                                          //This method sucks, since the tables have different values
                     newAsset = {
@@ -175,13 +171,6 @@ export default class AssetCreate extends Component {
 
         //UI Functions
         const typeOptions = Object.values(DataType);
-        // const setDefaultSelect = () => {
-        //     // this.setState({category: DataType.Application}, () => {
-        //     //     console.log(this.state.category);
-        //     // });
-        //     // this.state.category = DataType.Application;
-        //     // console.log(this.state.category);
-        // }
         const handleSelect = () => {
             var dropdownList = document.getElementById("createSelect");
             // this.state.category = dropdownList.options[dropdownList.selectedIndex].text;
@@ -227,7 +216,7 @@ export default class AssetCreate extends Component {
                         />
                         <input
                             type="text"
-                            placeholder="Asset Connections:"
+                            placeholder="Asset Connections: (ex: D-1 for data 1)"
                             style={{width: "33.34%", margin: "auto"}}
                             id="asset-connection"
                         />

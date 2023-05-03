@@ -1,8 +1,18 @@
 import { useState } from "react";
+import Popup from "reactjs-popup"
 import XLSX from "xlsx"
 import * as ASSET from "../../common/Asset.js"
 import DataTypeDropdown from "./DataTypeDropdown";
 import { DataType } from "../../common/DataType";
+
+const modalStyle = {
+    maxWidth: "600px",
+    width: "80%",
+    borderRadius: "10px",
+    border: "1px solid #D6D6D6",
+    boxShadow: "0 4px 4px rgba(0, 0, 0, 0.25)"
+}
+
 
 export default function AssetExport() {
     const [dataType, setType] = useState(DataType.Application);
@@ -43,12 +53,22 @@ export default function AssetExport() {
         //const writable = await fileHandle.createWritable();
         //await writable.write(f);
         //await writable.close();
+
+        //<DataTypeDropdown onDataTypeChange={handleTypeChange} />
+        //<button className="importButton" onClick={handleClick}>Export</button>
     }
 
     return (
-        <>
-            <DataTypeDropdown onDataTypeChange={handleTypeChange} />
-            <button className="importButton" onClick={handleClick}>Export</button>
-        </>
+        <Popup
+            trigger={<button className="exportButton">Export</button>}
+            modal={true}
+            closeOnEscape={false}
+            closeOnDocumentClick={true}
+            contentStyle={modalStyle}>
+                <DataTypeDropdown onDataTypeChange={handleTypeChange} />
+                <div style={{display: "flex", justifyContent: "center"}}>
+                    <button className="exportButtonSubmit" onClick={handleClick}>Submit</button>
+                </div>
+        </Popup>
     )
 }

@@ -23,8 +23,8 @@ function DataTypeDropdown(props: DataTypeDropdownState) {
   const typeOptions = Object.values(DataType);
   // Return the JSX element for the dropdown
   return (
-    <div>
-      <label htmlFor="type-dropdown">Select a data type:</label>
+    <div style={{display: 'flex', justifyContent: "center"}}>
+      <label style={{marginRight: 10}} htmlFor="type-dropdown">Select a data type:</label>
       <select id="type-dropdown" value={dataType} onChange={handleChange}>
         {/* Map each enum value to an option element */}
         {typeOptions.map(type => (
