@@ -7,7 +7,12 @@ console.log(process.env)
 
 // adding asset here for convenience
 // baseURL should be the base URL and routes should be part of routing
-const api = axios.create({ baseURL: `${process.env.REACT_APP_API}/asset` })
+const URL =
+    process.env.NODE_ENV === "development"
+        ? `${process.env.REACT_APP_LOCAL}/asset`
+        : `${process.env.REACT_APP_API}/asset`
+const api = axios.create({ baseURL: URL })
+//const api = axios.create({ baseURL: `${process.env.REACT_APP_API}/asset` })
 
 const get = async url => {
     try {
@@ -19,6 +24,7 @@ const get = async url => {
 
 const post = async (url, data) => {
     try {
+        console.log(url)
         return (await api.post(url, data)).data
     } catch (error) {
         console.log(error)
