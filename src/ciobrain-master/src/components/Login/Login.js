@@ -9,10 +9,10 @@ dotenv.config();
 const URL =
     process.env.NODE_ENV === "development"
         ? `${process.env.REACT_APP_LOCAL}/auth`
-        : `${process.env.REACT_APP_LOCAL}/auth`
+        : `${process.env.REACT_APP_API}/auth`
 const api = axios.create({ baseURL: URL })
-console.log(`${process.env.REACT_APP_LOCAL}/auth`);
-console.log(`${process.env.REACT_APP_LOCAL}/auth`);
+console.log("local url: "`${process.env.REACT_APP_LOCAL}/auth`);
+console.log("azure url: "`${process.env.REACT_APP_API}/auth`);
 //const api = axios.create({ baseURL: process.env.REACT_APP_API })
 
 
