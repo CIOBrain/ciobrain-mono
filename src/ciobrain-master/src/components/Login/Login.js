@@ -51,17 +51,17 @@ export default class Login extends Component {
     }
 
     popupContent(close) {
-        // const closeAndReset = event => {
-        //     close(event)
-        //     this.setState({asset: null})
-        // }
 
         const handleSubmit = async(event) => {
+            <div className="loginLoading" style={{ color: "blue" }}>Loading, please wait...</div>
             event.preventDefault()
             console.log("Password entered: " + this.state.password)
             await this.pushLogin()
             if(this.state.loginsucc==='Success'){
                 close(event)
+            }
+            else {
+                alert(this.state.loginsucc)
             }
 
         }
@@ -103,6 +103,7 @@ const post = async (url, data) => {
     try {
         return (await api.post(url, data)).data
     } catch (error) {
-        console.log(error)
+        console.log(error.response.data)
+        return error.response.data
     }
 }
