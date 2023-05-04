@@ -80,7 +80,7 @@ export default class AssetUpdate extends Component {
             });
             */ 
             ASSET.deleteAsset(newAsset["cat"],newAsset["Id"])
-            console.log(newAsset)
+            //console.log(newAsset)
             this.pushAssets(newAsset).then(result => {
                 this.setState({ result: result })
             })
