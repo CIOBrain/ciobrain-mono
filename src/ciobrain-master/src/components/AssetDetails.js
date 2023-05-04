@@ -108,7 +108,7 @@ export default class AssetDetails extends Component {
                 </div>
                 <div id="assetMenuHeader">
                     <div>Modify</div>
-                    <AssetUpdate />
+                    <AssetUpdate asset={asset}/>
                     <AssetDelete asset={asset} />
                 </div>
             </div>
