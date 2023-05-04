@@ -26,9 +26,7 @@ export default class AssetUpdate extends Component {
         super(props)
         this.state = { category: null, 
                     asset: null, 
-                    result: null, 
-                    selectedCategory: null,
-                    selectedAssetKey: null }
+                    result: null}
     }
 
     render() {
@@ -49,58 +47,43 @@ export default class AssetUpdate extends Component {
             close(event)
             this.setState({ category: null, 
                 asset: null, 
-                result: null, 
-                selectedCategory: null,
-                selectedAssetKey: null })
+                result: null})
         }
 
-        // const labelStyle = color => ({
-        //     display: "flex",
-        //     width: "33.33%",
-        //     color: color,
-        //     margin: "auto",
-        //     fontSize: "20px",
-        //     justifyContent: "center"
-        // })
+        const asset = this.props.asset
 
-        const submit = async event => {
+        const submit = event =>{
             event.preventDefault()
-            //const url = document.getElementById('Azure-API-URL').value;
-            //const password = document.getElementById('Azure-API-Password').value
-            //const result = true;
+            const newAsset = asset;
             var textboxName = document.getElementById("asset-name").value;
             var textboxType = document.getElementById("asset-type").value;
             var textboxShortType = document.getElementById("asset-short-type").value;
             var textboxConnection = document.getElementById("asset-connection").value;
-            
-            this.getAssetById().then(asset => {
-                this.setState({ asset: asset })
-                console.log(asset)
-            })
-            const tempAsset = this.state.asset;
-            console.log(tempAsset)
             if(textboxName !== ""){
-                tempAsset[ 'Name' ] = textboxName;
+                newAsset["Name"] = textboxName;
             }
             if(textboxType !== ""){
-                tempAsset[ 'Type' ] = textboxType;
+                newAsset["Long Type"] = textboxType;
             }
             if(textboxShortType !== ""){
-                tempAsset[ 'Short Type' ] = textboxShortType;
+                newAsset["Type"] = textboxShortType;
             }
             if(textboxConnection !== ""){
-                tempAsset[ 'Data Connections' ] = textboxConnection;
+                newAsset[ 'Data Connections' ] = textboxConnection;
             }
-
-            this.setState({asset: tempAsset}, () => {
-                console.log(this.state.asset)
+/*
+            this.setState({asset: asset}, () => {
+                //console.log(this.state.asset)
             });
-
-            this.pushAssets().then(result => {
+            this.setState({category: asset["cat"]}, () => {
+                //console.log(this.state.asset)
+            });
+            */ 
+            ASSET.deleteAsset(newAsset["cat"],newAsset["Id"])
+            console.log(newAsset)
+            this.pushAssets(newAsset).then(result => {
                 this.setState({ result: result })
             })
-            
-            //this.setState({ result: result })
         }
         
         const validateResult = () => {
@@ -190,32 +173,13 @@ export default class AssetUpdate extends Component {
             </div>
         )
     }
-    async getAssetById(){
-        const category = this.state.selectedCategory
-        const assetid = this.state.selectedAssetKey
-        console.log(category)
-        console.log(assetid)
-        if (!category || !assetid) return { error: "Invalid Asset" }
-        return await ASSET.getAssetById(category, assetid)
+    async pushAssets(newAsset) {
+        //this.state.category = DataType.Application;
+        //this.setState({category: DataType.Application});
+        const category = newAsset["cat"]
+        const assets = [newAsset]
+        if (!category || !assets) return { error: "Invalid Asset" }
+        return await ASSET.pushAssets(category, assets)
     }
-    async pushAssets() {
-        const state = this.state
-        const category = state.category
-        const asset = state.asset
-        console.log(category)
-        console.log(asset)
-        if (!category || !asset) return { error: "Invalid Asset" }
-        return await ASSET.pushAssets(category, asset)
-    }
-    async componentWillReceiveProps(nextProps) {
-        if (
-            this.state.selectedCategory === nextProps.selectedCategory &&
-            this.state.selectedAssetKey === nextProps.selectedAssetKey
-        )
-            return
-        this.setState({
-            selectedCategory: nextProps.selectedCategory,
-            selectedAssetKey: nextProps.selectedAssetKey
-        })
-    }
+    
 }
