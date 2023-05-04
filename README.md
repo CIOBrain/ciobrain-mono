@@ -1,4 +1,4 @@
-# ciobrain-mono
+# ciobrain-mono Spring 2023 Group 7
 A mono repo of the CIOBrain React client web app and Express API
 
 Each folder contains their respective readme.md files
